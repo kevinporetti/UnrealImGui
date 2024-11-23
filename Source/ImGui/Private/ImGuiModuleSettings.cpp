@@ -182,6 +182,15 @@ void FImGuiModuleSettings::SetToggleInputKey(const FImGuiKeyInfo& KeyInfo)
 	}
 }
 
+void FImGuiModuleSettings::SetIsDockingEnabled(bool bDockingEnabled)
+{
+	if (bIsDockingEnabled != bDockingEnabled)
+	{
+		bIsDockingEnabled = bDockingEnabled;
+		Properties.SetDockingEnabled(bDockingEnabled);
+	}
+}
+
 void FImGuiModuleSettings::SetCanvasSizeInfo(const FImGuiCanvasSizeInfo& CanvasSizeInfo)
 {
 	if (CanvasSize != CanvasSizeInfo)

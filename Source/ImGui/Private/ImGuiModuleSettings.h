@@ -196,12 +196,18 @@ protected:
 	UPROPERTY(EditAnywhere, config, Category = "Input")
 	bool bShareMouseInput = false;
 
+	// Whether docking should be enabled.
+	// This defines initial behaviour which can be later changed using 'ImGui.ToggleDockingEnabled' command or
+	// module properties interface.
+	UPROPERTY(EditAnywhere, config, Category = "Input")
+	bool bIsDockingEnabled = true;
+	
 	// If true, then in input mode ImGui will draw its own cursor in place of the hardware one.
 	// When disabled (default) there is a noticeable difference between cursor position seen by ImGui and position on
 	// the screen. Enabling this option removes that effect but with lower frame-rates UI becomes quickly unusable.
 	UPROPERTY(EditAnywhere, config, Category = "Input", AdvancedDisplay)
 	bool bUseSoftwareCursor = false;
-
+	
 	// Define a shortcut key to 'ImGui.ToggleInput' command. Binding is only set if the key field is valid.
 	// Note that modifier key properties can be set to one of the three values: undetermined means that state of the given
 	// modifier is not important, checked means that it needs to be pressed and unchecked means that it cannot be pressed.
@@ -291,6 +297,7 @@ private:
 	void SetShareMouseInput(bool bShare);
 	void SetUseSoftwareCursor(bool bUse);
 	void SetToggleInputKey(const FImGuiKeyInfo& KeyInfo);
+	void SetIsDockingEnabled(bool bDockingEnabled);
 	void SetCanvasSizeInfo(const FImGuiCanvasSizeInfo& CanvasSizeInfo);
 	void SetDPIScaleInfo(const FImGuiDPIScaleInfo& ScaleInfo);
 
@@ -309,4 +316,5 @@ private:
 	bool bShareGamepadInput = false;
 	bool bShareMouseInput = false;
 	bool bUseSoftwareCursor = false;
+	bool bIsDockingEnabled = true;
 };

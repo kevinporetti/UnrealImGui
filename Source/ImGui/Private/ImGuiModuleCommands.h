@@ -19,6 +19,7 @@ public:
 	static const TCHAR* const ToggleKeyboardInputSharing;
 	static const TCHAR* const ToggleGamepadInputSharing;
 	static const TCHAR* const ToggleMouseInputSharing;
+	static const TCHAR* const ToggleDockingEnabled;
 	static const TCHAR* const SetMouseInputSharing;
 	static const TCHAR* const ToggleDemo;
 
@@ -34,6 +35,7 @@ private:
 	void ToggleKeyboardInputSharingImpl();
 	void ToggleGamepadInputSharingImpl();
 	void ToggleMouseInputSharingImpl();
+	void ToggleDockingEnabledImpl();
 	void SetMouseInputSharingImpl(const TArray< FString >& Args);
 	void ToggleDemoImpl();
 
@@ -45,6 +47,7 @@ private:
 	FAutoConsoleCommand ToggleKeyboardInputSharingCommand;
 	FAutoConsoleCommand ToggleGamepadInputSharingCommand;
 	FAutoConsoleCommand ToggleMouseInputSharingCommand;
+	FAutoConsoleCommand ToggleDockingEnabledCommand;
 	FAutoConsoleCommand SetMouseInputSharingCommand;
 	FAutoConsoleCommand ToggleDemoCommand;
 };

@@ -72,6 +72,15 @@ public:
 	/** Toggle ImGui demo. */
 	void ToggleDemo() { SetShowDemo(!ShowDemo()); }
 
+	/** Check whether docking is enabled. */
+	bool IsDockingEnabled() const { return bIsDockingEnabled; }
+
+	/** Set whether docking is enabled. */
+	void SetDockingEnabled(bool bDockingEnabled) { bIsDockingEnabled = bDockingEnabled; }
+
+	/** Toggle whether docking is enabled. */
+	void ToggleDockingEnabled() { SetDockingEnabled(!IsDockingEnabled()); }
+	
 	/** Adds a new font to initialize */
 	void AddCustomFont(FName FontName, TSharedPtr<ImFontConfig> Font) { CustomFonts.Emplace(FontName, Font); }
 
@@ -94,5 +103,7 @@ private:
 
 	bool bShowDemo = false;
 
+	bool bIsDockingEnabled = true;
+	
 	TMap<FName, TSharedPtr<ImFontConfig>> CustomFonts;
 };

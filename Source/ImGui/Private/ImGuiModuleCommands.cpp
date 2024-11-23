@@ -12,6 +12,7 @@ const TCHAR* const FImGuiModuleCommands::ToggleGamepadNavigation = TEXT("ImGui.T
 const TCHAR* const FImGuiModuleCommands::ToggleKeyboardInputSharing = TEXT("ImGui.ToggleKeyboardInputSharing");
 const TCHAR* const FImGuiModuleCommands::ToggleGamepadInputSharing = TEXT("ImGui.ToggleGamepadInputSharing");
 const TCHAR* const FImGuiModuleCommands::ToggleMouseInputSharing = TEXT("ImGui.ToggleMouseInputSharing");
+const TCHAR* const FImGuiModuleCommands::ToggleDockingEnabled = TEXT("ImGui.ToggleDockingEnabled");
 const TCHAR* const FImGuiModuleCommands::SetMouseInputSharing = TEXT("ImGui.SetMouseInputSharing");
 const TCHAR* const FImGuiModuleCommands::ToggleDemo = TEXT("ImGui.ToggleDemo");
 
@@ -35,6 +36,9 @@ FImGuiModuleCommands::FImGuiModuleCommands(FImGuiModuleProperties& InProperties)
 	, ToggleMouseInputSharingCommand(ToggleMouseInputSharing,
 		TEXT("Toggle ImGui mouse input sharing."),
 		FConsoleCommandDelegate::CreateRaw(this, &FImGuiModuleCommands::ToggleMouseInputSharingImpl))
+	, ToggleDockingEnabledCommand(ToggleDockingEnabled,
+		TEXT("Toggle ImGui docking."),
+		FConsoleCommandDelegate::CreateRaw(this, &FImGuiModuleCommands::ToggleDockingEnabledImpl))
 	, SetMouseInputSharingCommand(SetMouseInputSharing,
 		TEXT("Toggle ImGui mouse input sharing."),
 		FConsoleCommandWithArgsDelegate::CreateRaw(this, &FImGuiModuleCommands::SetMouseInputSharingImpl))
@@ -77,6 +81,11 @@ void FImGuiModuleCommands::ToggleGamepadInputSharingImpl()
 void FImGuiModuleCommands::ToggleMouseInputSharingImpl()
 {
 	Properties.ToggleMouseInputSharing();
+}
+
+void FImGuiModuleCommands::ToggleDockingEnabledImpl()
+{
+	Properties.ToggleDockingEnabled();
 }
 
 void FImGuiModuleCommands::SetMouseInputSharingImpl(const TArray<FString>& Args)

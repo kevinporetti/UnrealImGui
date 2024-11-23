@@ -3,6 +3,7 @@
 #include "ImGuiInteroperability.h"
 
 #include "ImGuiInputState.h"
+#include "ImGuiModule.h"
 #include "Utilities/Arrays.h"
 
 
@@ -429,7 +430,8 @@ namespace ImGuiInterops
 		SetFlag(IO.ConfigFlags, ImGuiConfigFlags_NavEnableKeyboard, InputState.IsKeyboardNavigationEnabled());
 		SetFlag(IO.ConfigFlags, ImGuiConfigFlags_NavEnableGamepad, InputState.IsGamepadNavigationEnabled());
 		SetFlag(IO.BackendFlags, ImGuiBackendFlags_HasGamepad, InputState.HasGamepad());
-
+		SetFlag(IO.ConfigFlags, ImGuiConfigFlags_DockingEnable, FImGuiModule::Get().GetProperties().IsDockingEnabled());
+		
 		// Check whether we need to draw cursor.
 		IO.MouseDrawCursor = InputState.HasMousePointer();
 
@@ -438,23 +440,17 @@ namespace ImGuiInterops
 		{
 			// Copy the touch position to mouse position.
 			IO.AddMousePosEvent(InputState.GetTouchPosition().X, InputState.GetTouchPosition().Y);
-			//IO.MousePos.x = InputState.GetTouchPosition().X;
-			//IO.MousePos.y = InputState.GetTouchPosition().Y;
 
 			// With touch active one frame longer than it is down, we have one frame to processed touch up.
 			IO.AddMouseButtonEvent(0, InputState.IsTouchDown());
-			//IO.MouseDown[0] = InputState.IsTouchDown();
 		}
 		else
 		{
 			// Copy the mouse position.
 			IO.AddMousePosEvent(InputState.GetMousePosition().X, InputState.GetMousePosition().Y);
-			//IO.MousePos.x = InputState.GetMousePosition().X;
-			//IO.MousePos.y = InputState.GetMousePosition().Y;
 
 			// Copy mouse wheel delta.
 			IO.AddMouseWheelEvent(0, IO.MouseWheel + InputState.GetMouseWheelDelta());
-			//IO.MouseWheel += InputState.GetMouseWheelDelta();
 		}
 	}
 }
