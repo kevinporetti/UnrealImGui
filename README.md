@@ -1,9 +1,3 @@
-NOTICE
-======
-
-This branch is no longer maintained, I would pick a different branch.
-
-
 Unreal ImGui
 ============
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
