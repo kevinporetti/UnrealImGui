@@ -195,12 +195,12 @@ namespace ImGuiInterops
 	// after this transform they should fit in the range without conflicts.
 	// NOTE: Should any of the platforms have other conflicts or any trouble with inputs, this is the likely
 	// candidate for change.
-	static uint32 MapKeyCode(uint32 KeyCode)
+	static ImGuiKey MapKeyCode(uint32 KeyCode)
 	{
-		return (KeyCode < 512) ? KeyCode : 256 + (KeyCode % 256);
+		return static_cast<ImGuiKey>((KeyCode < 512) ? KeyCode : 256 + (KeyCode % 256));
 	}
 
-	uint32 GetKeyIndex(const FKey& Key)
+	ImGuiKey GetKeyIndex(const FKey& Key)
 	{
 		const uint32* pKeyCode = nullptr;
 		const uint32* pCharCode = nullptr;
@@ -215,7 +215,7 @@ namespace ImGuiInterops
 		return MapKeyCode(KeyCode);
 	}
 
-	uint32 GetKeyIndex(const FKeyEvent& KeyEvent)
+	ImGuiKey GetKeyIndex(const FKeyEvent& KeyEvent)
 	{
 		return MapKeyCode(KeyEvent.GetKeyCode());
 	}
@@ -304,7 +304,9 @@ namespace ImGuiInterops
 			}
 		}
 	}
-
+	
+	// TODO: Update gamepad navigation to use new ImGuiKey API
+	/*
 	void SetGamepadNavigationKey(ImGuiTypes::FNavInputArray& NavInputs, const FKey& Key, bool bIsDown)
 	{
 #define MAP_KEY(KeyCondition, NavIndex) UpdateKey(Key, KeyCondition, NavInputs[NavIndex], bIsDown)
@@ -334,12 +336,13 @@ namespace ImGuiInterops
 
 		if (Key.IsGamepadKey())
 		{
-			MAP_SYMMETRIC_AXIS(EKeys::Gamepad_LeftX, ImGuiNavInput_LStickLeft, ImGuiNavInput_LStickRight);
-			MAP_SYMMETRIC_AXIS(EKeys::Gamepad_LeftY, ImGuiNavInput_LStickDown, ImGuiNavInput_LStickUp);
+			MAP_SYMMETRIC_AXIS(EKeys::Gamepad_LeftX, ImGuiKey_GamepadLStickLeft, ImGuiKey_GamepadLStickRight);
+			MAP_SYMMETRIC_AXIS(EKeys::Gamepad_LeftY, ImGuiKey_GamepadLStickDown, ImGuiKey_GamepadLStickUp);
 		}
 
 #undef MAP_SYMMETRIC_AXIS
 	}
+	*/
 
 	//====================================================================================================
 	// Input State Copying
@@ -390,7 +393,24 @@ namespace ImGuiInterops
 
 		if (!InputState.GetMouseButtonsUpdateRange().IsEmpty())
 		{
-			Copy(InputState.GetMouseButtons(), IO.MouseDown, InputState.GetMouseButtonsUpdateRange());
+			for(const auto& Pair : InputState.MouseButtonDownEvents)
+			{
+				uint32 MouseIdx = GetMouseIndex(Pair.Value.GetEffectingButton());
+				if(MouseIdx != -1)
+				{
+					IO.AddMouseButtonEvent(MouseIdx, true);
+				}
+			}
+			
+			
+			for(const auto& Pair : InputState.MouseButtonUpEvents)
+			{
+				uint32 MouseIdx = GetMouseIndex(Pair.Value.GetEffectingButton());
+				if(MouseIdx != -1)
+				{
+					IO.AddMouseButtonEvent(MouseIdx, false);
+				}
+			}
 		}
 
 		for (const TCHAR Char : InputState.GetCharacters())
@@ -398,10 +418,13 @@ namespace ImGuiInterops
 			IO.AddInputCharacter(CastInputChar(Char));
 		}
 
+		// TODO: Update gamepad navigation to use new ImGuiKey API
+		/*
 		if (InputState.IsGamepadNavigationEnabled() && InputState.HasGamepad())
 		{
 			Copy(InputState.GetNavigationInputs(), IO.NavInputs);
 		}
+		*/
 
 		SetFlag(IO.ConfigFlags, ImGuiConfigFlags_NavEnableKeyboard, InputState.IsKeyboardNavigationEnabled());
 		SetFlag(IO.ConfigFlags, ImGuiConfigFlags_NavEnableGamepad, InputState.IsGamepadNavigationEnabled());
@@ -414,20 +437,24 @@ namespace ImGuiInterops
 		if (InputState.IsTouchActive())
 		{
 			// Copy the touch position to mouse position.
-			IO.MousePos.x = InputState.GetTouchPosition().X;
-			IO.MousePos.y = InputState.GetTouchPosition().Y;
+			IO.AddMousePosEvent(InputState.GetTouchPosition().X, InputState.GetTouchPosition().Y);
+			//IO.MousePos.x = InputState.GetTouchPosition().X;
+			//IO.MousePos.y = InputState.GetTouchPosition().Y;
 
 			// With touch active one frame longer than it is down, we have one frame to processed touch up.
-			IO.MouseDown[0] = InputState.IsTouchDown();
+			IO.AddMouseButtonEvent(0, InputState.IsTouchDown());
+			//IO.MouseDown[0] = InputState.IsTouchDown();
 		}
 		else
 		{
 			// Copy the mouse position.
-			IO.MousePos.x = InputState.GetMousePosition().X;
-			IO.MousePos.y = InputState.GetMousePosition().Y;
+			IO.AddMousePosEvent(InputState.GetMousePosition().X, InputState.GetMousePosition().Y);
+			//IO.MousePos.x = InputState.GetMousePosition().X;
+			//IO.MousePos.y = InputState.GetMousePosition().Y;
 
 			// Copy mouse wheel delta.
-			IO.MouseWheel += InputState.GetMouseWheelDelta();
+			IO.AddMouseWheelEvent(0, IO.MouseWheel + InputState.GetMouseWheelDelta());
+			//IO.MouseWheel += InputState.GetMouseWheelDelta();
 		}
 	}
 }

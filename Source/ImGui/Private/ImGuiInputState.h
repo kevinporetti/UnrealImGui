@@ -22,9 +22,6 @@ public:
 	// Array for key states.
 	using FKeysArray = ImGuiInterops::ImGuiTypes::FKeysArray;
 
-	// Array for navigation input states.
-	using FNavInputArray = ImGuiInterops::ImGuiTypes::FNavInputArray;
-
 	// Pair of indices defining range in mouse buttons array.
 	using FMouseButtonsIndexRange = Utilities::TArrayIndexRange<FMouseButtonsArray, uint32>;
 
@@ -134,9 +131,8 @@ public:
 	// @param bIsDown - True, if Alt is down
 	void SetAltDown(bool bIsDown) { bIsAltDown = bIsDown; }
 
-	// Get reference to the array with navigation input states.
-	const FNavInputArray& GetNavigationInputs() const { return NavigationInputs; }
-
+	// TODO: Update gamepad navigation to use new ImGuiKey API
+	/*
 	// Change state of the navigation input associated with this gamepad key.
 	// @param KeyEvent - Key event with gamepad key input
 	// @param bIsDown - True, if key is down
@@ -146,6 +142,7 @@ public:
 	// @param AnalogInputEvent - Analogue input event with gamepad axis input
 	// @param Value - Analogue value that should be set for this axis
 	void SetGamepadNavigationAxis(const FAnalogInputEvent& AnalogInputEvent, float Value) { ImGuiInterops::SetGamepadNavigationAxis(NavigationInputs, AnalogInputEvent.GetKey(), Value); }
+	*/
 
 	// Check whether keyboard navigation is enabled.
 	bool IsKeyboardNavigationEnabled() const { return bKeyboardNavigationEnabled; }
@@ -173,7 +170,8 @@ public:
 	{
 		ResetKeyboard();
 		ResetMouse();
-		ResetGamepadNavigation();
+		// TODO: Update gamepad navigation to use new ImGuiKey API
+		//ResetGamepadNavigation();
 	}
 
 	// Reset the keyboard input state and mark it as dirty.
@@ -191,11 +189,14 @@ public:
 		ClearMouseAnalogue();
 	}
 
+	// TODO: Update gamepad navigation to use new ImGuiKey API
+	/*
 	// Reset the gamepad navigation state.
 	void ResetGamepadNavigation()
 	{
 		ClearNavigationInputs();
 	}
+	*/
 
 	// Clear part of the state that is meant to be updated in every frame like: accumulators, buffers, navigation data
 	// and information about dirty parts of keys or mouse buttons arrays.
@@ -203,10 +204,12 @@ public:
 
 	TMap<uint32, FKeyEvent> KeyDownEvents;
 	TMap<uint32, FKeyEvent> KeyUpEvents;
+	TMap<uint32, FPointerEvent> MouseButtonDownEvents;
+	TMap<uint32, FPointerEvent> MouseButtonUpEvents;
 
 private:
 
-	void SetKeyDown(uint32 KeyIndex, bool bIsDown);
+	void SetKeyDown(ImGuiKey KeyIndex, bool bIsDown);
 	void SetMouseDown(uint32 MouseIndex, bool IsDown);
 
 	void ClearCharacters();
@@ -214,7 +217,6 @@ private:
 	void ClearMouseButtons();
 	void ClearMouseAnalogue();
 	void ClearModifierKeys();
-	void ClearNavigationInputs();
 
 	FVector2D MousePosition = FVector2D::ZeroVector;
 	FVector2D TouchPosition = FVector2D::ZeroVector;
@@ -227,9 +229,7 @@ private:
 
 	FKeysArray KeysDown;
 	FKeysIndexRange KeysUpdateRange;
-
-	FNavInputArray NavigationInputs;
-
+	
 	bool bHasMousePointer = false;
 	bool bTouchDown = false;
 	bool bTouchProcessed = false;

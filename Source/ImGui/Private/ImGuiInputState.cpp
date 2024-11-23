@@ -17,7 +17,7 @@ void FImGuiInputState::AddCharacter(TCHAR Char)
 	InputCharacters.Add(Char);
 }
 
-void FImGuiInputState::SetKeyDown(uint32 KeyIndex, bool bIsDown)
+void FImGuiInputState::SetKeyDown(ImGuiKey KeyIndex, bool bIsDown)
 {
 	if (KeyIndex < Utilities::GetArraySize(KeysDown))
 	{
@@ -47,7 +47,9 @@ void FImGuiInputState::ClearUpdateState()
 
 	KeyDownEvents.Reset();
 	KeyUpEvents.Reset();
-
+	MouseButtonDownEvents.Reset();
+	MouseButtonUpEvents.Reset();
+	
 	KeysUpdateRange.SetEmpty();
 	MouseButtonsUpdateRange.SetEmpty();
 
@@ -90,11 +92,5 @@ void FImGuiInputState::ClearModifierKeys()
 	bIsControlDown = false;
 	bIsShiftDown = false;
 	bIsAltDown = false;
-}
-
-void FImGuiInputState::ClearNavigationInputs()
-{
-	using std::fill;
-	fill(NavigationInputs, &NavigationInputs[Utilities::GetArraySize(NavigationInputs)], 0.f);
 }
 

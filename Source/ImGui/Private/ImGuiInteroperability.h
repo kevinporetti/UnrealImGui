@@ -22,13 +22,11 @@ namespace ImGuiInterops
 	namespace ImGuiTypes
 	{
 		using FMouseButtonsArray = decltype(ImGuiIO::MouseDown);
-		using FKeysArray = decltype(ImGuiIO::KeysDown);
-		using FNavInputArray = decltype(ImGuiIO::NavInputs);
-
-		using FKeyMap = decltype(ImGuiIO::KeyMap);
+		// ImGuiKeyData type keeps track of down state, duration, etc. but we only care about down state
+		using FKeysArray = bool[ImGuiKey_NamedKey_COUNT];
 	}
 
-
+	
 	//====================================================================================================
 	// Input Mapping
 	//====================================================================================================
@@ -37,10 +35,10 @@ namespace ImGuiInterops
 	void SetUnrealKeyMap(ImGuiIO& IO);
 
 	// Map FKey to index in keys buffer.
-	uint32 GetKeyIndex(const FKey& Key);
+	ImGuiKey GetKeyIndex(const FKey& Key);
 
 	// Map key event to index in keys buffer.
-	uint32 GetKeyIndex(const FKeyEvent& KeyEvent);
+	ImGuiKey GetKeyIndex(const FKeyEvent& KeyEvent);
 
 	// Map mouse FKey to index in mouse buttons buffer.
 	uint32 GetMouseIndex(const FKey& MouseButton);
@@ -54,6 +52,8 @@ namespace ImGuiInterops
 	// Convert from ImGuiMouseCursor type to EMouseCursor.
 	EMouseCursor::Type ToSlateMouseCursor(ImGuiMouseCursor MouseCursor);
 
+	// TODO: Update gamepad navigation to use new ImGuiKey API
+	/*
 	// Set in the target array navigation input corresponding to gamepad key.
 	// @param NavInputs - Target array
 	// @param Key - Gamepad key mapped to navigation input (non-mapped keys will be ignored)
@@ -65,7 +65,7 @@ namespace ImGuiInterops
 	// @param Key - Gamepad axis key mapped to navigation input (non-axis or non-mapped inputs will be ignored)
 	// @param Value - Axis value (-1..1 values from Unreal are mapped to separate ImGui axes with values in range 0..1)
 	void SetGamepadNavigationAxis(ImGuiTypes::FNavInputArray& NavInputs, const FKey& Key, float Value);
-
+	*/
 
 	//====================================================================================================
 	// Input State Copying
@@ -104,12 +104,12 @@ namespace ImGuiInterops
 	// Convert from ImGui Texture Id to Texture Index that we use for texture resources.
 	FORCEINLINE TextureIndex ToTextureIndex(ImTextureID Index)
 	{
-		return static_cast<TextureIndex>(reinterpret_cast<intptr_t>(Index));
+		return static_cast<TextureIndex>(static_cast<intptr_t>(Index));
 	}
 
 	// Convert from Texture Index to ImGui Texture Id that we pass to ImGui.
 	FORCEINLINE ImTextureID ToImTextureID(TextureIndex Index)
 	{
-		return reinterpret_cast<ImTextureID>(static_cast<intptr_t>(Index));
+		return static_cast<ImTextureID>(static_cast<intptr_t>(Index));
 	}
 }

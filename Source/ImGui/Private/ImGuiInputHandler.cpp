@@ -45,7 +45,8 @@ FReply UImGuiInputHandler::OnKeyDown(const FKeyEvent& KeyEvent)
 		bool bConsume = false;
 		if (InputState->IsGamepadNavigationEnabled())
 		{
-			InputState->SetGamepadNavigationKey(KeyEvent, true);
+			// TODO: Update gamepad navigation to use new ImGuiKey API
+			//InputState->SetGamepadNavigationKey(KeyEvent, true);
 			bConsume = !ModuleManager->GetProperties().IsGamepadInputShared();
 		}
 
@@ -94,7 +95,8 @@ FReply UImGuiInputHandler::OnKeyUp(const FKeyEvent& KeyEvent)
 		bool bConsume = false;
 		if (InputState->IsGamepadNavigationEnabled())
 		{
-			InputState->SetGamepadNavigationKey(KeyEvent, false);
+			// TODO: Update gamepad navigation to use new ImGuiKey API
+			//InputState->SetGamepadNavigationKey(KeyEvent, false);
 			bConsume = !ModuleManager->GetProperties().IsGamepadInputShared();
 		}
 
@@ -115,7 +117,8 @@ FReply UImGuiInputHandler::OnAnalogValueChanged(const FAnalogInputEvent& AnalogI
 
 	if (AnalogInputEvent.GetKey().IsGamepadKey() && InputState->IsGamepadNavigationEnabled())
 	{
-		InputState->SetGamepadNavigationAxis(AnalogInputEvent, AnalogInputEvent.GetAnalogValue());
+		// TODO: Update gamepad navigation to use new ImGuiKey API
+		//InputState->SetGamepadNavigationAxis(AnalogInputEvent, AnalogInputEvent.GetAnalogValue());
 		bConsume = !ModuleManager->GetProperties().IsGamepadInputShared();
 	}
 
@@ -130,6 +133,7 @@ FReply UImGuiInputHandler::OnMouseButtonDown(const FPointerEvent& MouseEvent)
 	}
 
 	InputState->SetMouseDown(MouseEvent, true);
+	InputState->MouseButtonDownEvents.Add(ImGuiInterops::GetMouseIndex(MouseEvent.GetEffectingButton()), MouseEvent);
 	if (ModuleManager)
 	{
 		FImGuiContextProxy* Proxy = ModuleManager->GetContextManager().GetContextProxy(0);
@@ -145,6 +149,7 @@ FReply UImGuiInputHandler::OnMouseButtonDown(const FPointerEvent& MouseEvent)
 FReply UImGuiInputHandler::OnMouseButtonDoubleClick(const FPointerEvent& MouseEvent)
 {
 	InputState->SetMouseDown(MouseEvent, true);
+	InputState->MouseButtonDownEvents.Add(ImGuiInterops::GetMouseIndex(MouseEvent.GetEffectingButton()), MouseEvent);
 	return ToReply(true);
 }
 
@@ -156,6 +161,7 @@ FReply UImGuiInputHandler::OnMouseButtonUp(const FPointerEvent& MouseEvent)
 	}
 
 	InputState->SetMouseDown(MouseEvent, false);
+	InputState->MouseButtonUpEvents.Add(ImGuiInterops::GetMouseIndex(MouseEvent.GetEffectingButton()), MouseEvent);
 	return ToReply(true);
 }
 
@@ -224,7 +230,8 @@ void UImGuiInputHandler::OnGamepadInputDisabled()
 	if (bGamepadInputEnabled)
 	{
 		bGamepadInputEnabled = false;
-		InputState->ResetGamepadNavigation();
+		// TODO: Update gamepad navigation to use new ImGuiKey API
+		//InputState->ResetGamepadNavigation();
 	}
 }
 

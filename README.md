@@ -2,39 +2,39 @@ Unreal ImGui
 ============
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 
-Unreal ImGui is an Unreal Engine 4 plug-in that integrates [Dear ImGui](https://github.com/ocornut/imgui) developed by Omar Cornut.
+Unreal ImGui is an Unreal Engine 5 plug-in that integrates [Dear ImGui](https://github.com/ocornut/imgui) developed by Omar Cornut.
 
 Dear ImGui is an immediate-mode graphical user interface library that is very lightweight and easy to use. It can be very useful when creating debugging tools.
 
 :stop_button: Read Me First
 ---------------------------
-Please note that this is a forked project from [https://github.com/segross/UnrealImGui](https://github.com/segross/UnrealImGui). I do not take credit for the work he's put into making Dear ImGui work in Unreal Engine. The work I've done to this fork is listed below.
+This is a fork of [https://github.com/benui-dev/UnrealImGui](https://github.com/benui-dev/UnrealImGui), which itself is a fork of the original UnrealImGui project by [https://github.com/segross/UnrealImGui](https://github.com/segross/UnrealImGui).
 
-I've removed large portions of this readme.md to keep redundant information between the base project and this fork to a minimum. If you wish to read the original readme.md, please see this link: [UnrealImGui ReadMe.md](https://github.com/segross/UnrealImGui/blob/master/README.md).
-
-Also note that the NetImGui branch is not up to date with any of this fork's changes.
+You can view the original readme.md, please see this link: [UnrealImGui ReadMe.md](https://github.com/benui-dev/UnrealImGui/blob/master/README.md).
 
 Fork Additions/Fixes
 --------------------
- - Updated core source files for Unreal Engine 5.
- - Updated Dear ImGui to 1.87.
- - Added ImPlot v0.13 WIP.
- - `ImGui::IsKey*` now functional with all known ImGui keys.
- - Updated input handling flow to be [standard compliant](https://github.com/ocornut/imgui/issues/4921) with Dear ImGui 1.87 which makes ImGui react better at low FPS. Will add `IMGUI_DISABLE_OBSOLETE_KEYIO` preprocessor once I've ripped out old style input.
- - Allowed `UTexture` for Texture Manager so render targets can also be rendered to quads rather than just being limited to using `UTexture2D` instances.
- - Added the ability to instruct ImGui context to build custom fonts (like FontAwesome).
+ - Updated Dear ImGui to 1.91.5-docking
+
+TO-DO
+-----
+ - [X] Update Dear ImGui to latest 'docking' branch release (which as of writing is 1.91.5-docking)
+ - [X] Update input state to use new ImGuiKey API
+ - [ ] Update gamepad navigation to use new ImGuiKey API
+ - [ ] Enable docking
+ - [ ] Add NetImGui support
 
 Status
 ------
 UnrealImGui Version: 1.22
 
-ImGui version: 1.87
+ImGui version: 1.91.5-docking
 
 ImPlot version: v0.13 WIP
 
-Supported Unreal Engine version: 5.0*
+Supported Unreal Engine version: 5.4*
 
-\* *The original repository has support for later versions of UE4. I've not tested this fork on UE4 variants, I only know it works for UE5 currently.*
+\* *The original repository and Ben's fork that this project is based on has support for Unreal 4.26 to 5.3. As of writing I am currently using this plugin on Unreal 5.4 with no issues. I cannot guarantee compatibility with versions other than the ones previously listed, so use this plugin with other versions of Unreal at your own risk.* 
 
 How to Set up
 -------------
@@ -176,7 +176,8 @@ ImGui::TextUnformatted(TCHAR_TO_UTF8(*Str));
 
 See also
 --------
- - [Original Project by segross](https://github.com/segross/UnrealImGui)
+ - [Fork this project is based on](https://github.com/benui-dev/UnrealImGui)
+ - [Original project by segross](https://github.com/segross/UnrealImGui)
  - [Dear ImGui](https://github.com/ocornut/imgui)
  - [ImPlot](https://github.com/epezent/implot)
 
