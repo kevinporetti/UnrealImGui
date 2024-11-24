@@ -199,7 +199,7 @@ protected:
 	// Whether docking should be enabled.
 	// This defines initial behaviour which can be later changed using 'ImGui.ToggleDockingEnabled' command or
 	// module properties interface.
-	UPROPERTY(EditAnywhere, config, Category = "Input")
+	UPROPERTY(EditAnywhere, config, Category = "Input", DisplayName = "Enable Docking")
 	bool bIsDockingEnabled = true;
 	
 	// If true, then in input mode ImGui will draw its own cursor in place of the hardware one.
