@@ -15,15 +15,16 @@ You can view the original readme.md, please see this link: [UnrealImGui ReadMe.m
 Fork Additions/Fixes
 --------------------
  - Updated Dear ImGui to 1.91.5-docking
- - Added configurable docking enabled setting
+ - Added configurable docking-enabled setting
 
 TO-DO
 -----
  - [X] Update Dear ImGui to latest 'docking' branch release (which as of writing is 1.91.5-docking)
+ - [ ] Update ImPlot to latest (as of writing is 0.16)
  - [X] Update input state to use new ImGuiKey API
  - [ ] Update gamepad navigation to use new ImGuiKey API
  - [X] Enable docking
-    - [ ] Support full-screen dock space
+ - [ ] Support full-screen dock space
  - [ ] Add NetImGui support
 
 Status
